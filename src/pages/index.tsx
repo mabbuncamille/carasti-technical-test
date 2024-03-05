@@ -1,118 +1,228 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
+import { Inter } from 'next/font/google';
+import Head from 'next/head';
+import MainLayout from '../layouts/MainLayout';
+import { FaRegUser, FaRegCalendarCheck } from 'react-icons/fa6';
+import { LuWallet, LuMessageSquare } from 'react-icons/lu';
+import { FiSettings } from 'react-icons/fi';
+import { HiOutlineMail } from 'react-icons/hi';
+import { GoQuestion } from 'react-icons/go';
+import { RiArrowDropDownLine } from 'react-icons/ri';
+import Link from 'next/link';
+import TextField from '@/components/TextField';
+import Image from 'next/image';
+import { ChangeEvent, useState } from 'react';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
+
+const navigation = [
+  { name: 'My Profile', icon: FaRegUser, href: '#' },
+  { name: 'My Bookings', icon: FaRegCalendarCheck, href: '#' },
+  { name: 'My Wallet', icon: LuWallet, href: '#' },
+  { name: 'Settings', icon: FiSettings, href: '#' },
+  { name: 'Support', icon: LuMessageSquare, href: '#' },
+];
+
+const tabs = [
+  { name: 'Details', href: '#' },
+  { name: 'Documents', href: '#' },
+  { name: 'Referral', href: '#' },
+  { name: 'Tolls & Fines Analytics', href: 'toll-fine-analytics' },
+  { name: 'Plant a Tree', href: '#' },
+  { name: 'Share Rewards', href: '#' },
+  { name: 'Favourite Cars', href: '#' },
+];
 
 export default function Home() {
+  const [imageSrc, setImageSrc] = useState('/alex-suprun-avatar.jpg');
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files ? e.target.files[0] : null;
+    // const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setImageSrc(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImageSrc('/alex-suprun-avatar.jpg'); // Set default image path here
+    }
+  };
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+    <MainLayout>
+      <Head>
+        <title> My Profile | Carasti </title>
+      </Head>
+
+      <div className="flex mx-auto space-x-6 mt-8 max-w-7xl ">
+        {/* LEFT MY PROFIL NAV */}
+        <aside className="bg-white w-64 py-8 px-4 rounded-lg">
+          <ul className="space-y-1">
+            {navigation.map((item) => (
+              <li key={item.name} className="pl-2">
+                <Link
+                  href={item.href}
+                  className="flex items-center p-2 hover:bg-gray-100 hover:rounded-md"
+                >
+                  <item.icon className="text-xl" />
+                  <span className="ms-3 font-semibold text-sm">
+                    {item.name}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </aside>
+
+        {/* MAIN CONTENT */}
+        <main className="bg-white flex-1 p-8">
+          <h2 className="text-3xl font-bold">My Profile</h2>
+          <div className="border bg-[#F9FAFB] rounded-md p-1 mt-6">
+            <ul className="flex">
+              {tabs.map((item) => (
+                <li
+                  key={item.name}
+                  className="px-4 py-2 rounded-md hover:bg-white"
+                >
+                  <Link href={item.href}>
+                    <p className="font-semibold text-sm ">{item.name}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="px-5">
+            <div className="py-4 mt-4">
+              <h3 className="text-lg font-semibold">Personal info</h3>
+              <span className="text-sm">
+                Update your photo and personal details here.
+              </span>
+            </div>
+            <hr className="w-full" />
+
+            <div className="flex justify-between items-center py-4">
+              <p className="font-semibold w-80">Name</p>
+              <div className="flex-1 grid grid-cols-2 gap-6">
+                <TextField label="First name" />
+                <TextField label="Last name" />
+              </div>
+            </div>
+
+            <hr className="w-full" />
+
+            <div className="flex justify-between items-center py-4">
+              <p className="font-semibold w-80">Email Address</p>
+              <div className="flex-1">
+                <TextField label="john@info.com" icon={HiOutlineMail} />
+              </div>
+            </div>
+
+            <hr className="w-full" />
+
+            <div className="flex justify-between items-center py-4">
+              <div className="w-80">
+                <div className="flex items-center space-x-2">
+                  <p className="font-semibold">Your photo</p>
+                  <GoQuestion />
+                </div>
+                <span className="text-sm">
+                  This will be displayed on your profile.
+                </span>
+              </div>
+              <div className="flex-1 flex space-x-4 items-center">
+                <div className="w-24 h-24 rounded-full overflow-hidden border border-gray-300 relative">
+                  <Image
+                    src={imageSrc}
+                    alt="Profile"
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-full"
+                  />
+                </div>
+                <div className="relative">
+                  <span className="sr-only">Choose profile photo</span>
+                  <input
+                    type="file"
+                    id="photo-upload"
+                    className="absolute opacity-0 w-full h-full"
+                    onChange={handleImageChange}
+                    accept="image/svg+xml, image/png, image/jpeg, image/gif"
+                  />
+                  <label
+                    htmlFor="photo-upload"
+                    className="block bg-white text-gray-700 text-sm font-semibold rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-50 px-4 py-2 w-full"
+                  >
+                    Click to upload or drag and drop
+                    <br />
+                    SVG, PNG, JPG or GIF (max. 800x400px)
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <hr className="w-full" />
+
+            <div className="flex justify-between items-center py-4">
+              <p className="font-semibold w-80">Date of birth</p>
+              <div className="flex-1">
+                <div></div>
+                <TextField label="john@info.com" />
+              </div>
+            </div>
+
+            <hr className="w-full" />
+
+            <div className="flex justify-between items-center py-4">
+              <p className="font-semibold w-80">Phone number</p>
+              <div className="flex flex-1">
+                <label
+                  htmlFor="location-search"
+                  className="mb-2 text-sm font-medium text-gray-900 sr-only"
+                >
+                  Phone number
+                </label>
+                <button
+                  id="dropdown-button-2"
+                  data-dropdown-toggle="dropdown-search-city"
+                  className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-500 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
+                  type="button"
+                >
+                  AE <RiArrowDropDownLine />
+                </button>
+                <div className="relative w-full">
+                  <input
+                    type="search"
+                    id="location-search"
+                    className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <hr className="w-full" />
+
+            <div className="relative flex justify-end py-4">
+              <button
+                type="button"
+                className="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </main>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </MainLayout>
   );
 }
