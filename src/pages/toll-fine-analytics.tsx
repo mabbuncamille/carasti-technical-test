@@ -1,16 +1,9 @@
-import { Inter } from 'next/font/google';
 import Head from 'next/head';
 import MainLayout from '../layouts/MainLayout';
 import { FaRegUser, FaRegCalendarCheck } from 'react-icons/fa6';
 import { LuWallet, LuMessageSquare } from 'react-icons/lu';
 import { FiSettings } from 'react-icons/fi';
-import { HiOutlineMail } from 'react-icons/hi';
-import { GoQuestion } from 'react-icons/go';
-import { RiArrowDropDownLine } from 'react-icons/ri';
 import Link from 'next/link';
-import TextField from '@/components/TextField';
-import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
 
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';

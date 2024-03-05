@@ -1,5 +1,3 @@
-import Link from 'next/link';
-import { ReactNode } from 'react';
 import { FaLinkedin, FaFacebook, FaInstagram, FaTiktok } from 'react-icons/fa';
 
 type Props = {

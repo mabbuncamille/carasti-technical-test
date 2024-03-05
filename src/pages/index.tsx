@@ -12,8 +12,6 @@ import TextField from '@/components/TextField';
 import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 
-const inter = Inter({ subsets: ['latin'] });
-
 const navigation = [
   { name: 'My Profile', icon: FaRegUser, href: '#' },
   { name: 'My Bookings', icon: FaRegCalendarCheck, href: '#' },
