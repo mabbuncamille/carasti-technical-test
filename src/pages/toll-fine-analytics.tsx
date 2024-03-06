@@ -60,7 +60,7 @@ export default function TollAndFineAnalytics() {
   return (
     <MainLayout>
       <Head>
-        <title> My Profile | Carasti </title>
+        <title> Toll & Fines Analytics | Carasti </title>
       </Head>
 
       <div className="flex mx-auto space-x-6 mt-8 max-w-7xl ">
